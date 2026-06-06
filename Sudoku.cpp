@@ -2,7 +2,7 @@
 #include <iostream>
 #include <ctime>
 
-// 隨機數生成器相關輔助（自定義線性同餘法 LCG）
+// 使用自定義線性同餘法 (LCG) 生成隨機數，避免平台相依性問題
 static unsigned long long next_seed = 1;
 
 int getManualRand(int limit) {
@@ -16,7 +16,6 @@ void setManualSrand(unsigned int seed) {
 }
 
 Sudoku::Sudoku() {
-    // 初始化盤面
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             grid[i][j] = 0;
@@ -27,7 +26,6 @@ Sudoku::Sudoku() {
 }
 
 void Sudoku::generatePuzzle(int difficulty) {
-    // 1. 先清空所有盤面
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             grid[i][j] = 0;
@@ -35,24 +33,19 @@ void Sudoku::generatePuzzle(int difficulty) {
         }
     }
 
-    // 2. 隨機填充對角線的三個 3x3 宮格（彼此獨立，最容易隨機填入且不易衝突）
     fillDiagonal();
-
-    // 3. 利用遞迴回溯法填滿剩餘的格子，產生一組合法的完整答案
     fillRemaining(0, 3);
 
-    // 4. 將生成的隨機答案複製備份到 solution 陣列中
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             solution[i][j] = grid[i][j];
         }
     }
 
-    // 5. 根據難度決定要挖空的格子數量
-    // 1: 簡單 (挖 30 空格) | 2: 普通 (挖 42 空格) | 3: 困難 (挖 54 空格)
+    // 1:簡單(30) | 2:普通(42) | 3:困難(54) | 4:極限(54)
     int k = 30;
     if (difficulty == 2) k = 42;
-    else if (difficulty == 3) k = 54;
+    else if (difficulty == 3 || difficulty == 4) k = 54;
 
     removeKDigits(k);
 }
@@ -151,10 +144,37 @@ bool Sudoku::isSafe(int r, int c, int val) const {
 }
 
 bool Sudoku::validateAndSet(int r, int c, int val) {
-    // 比對玩家填入的值是否符合這一局隨機產生的正確答案
     if (solution[r][c] == val) {
         grid[r][c] = val;
         return true;
+    }
+    return false;
+}
+
+bool Sudoku::getHint(int& outR, int& outC, int& outVal) {
+    int emptyCount = 0;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (grid[i][j] == 0) emptyCount++;
+        }
+    }
+    if (emptyCount == 0) return false;
+
+    int target = getManualRand(emptyCount);
+    int current = 0;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (grid[i][j] == 0) {
+                if (current == target) {
+                    grid[i][j] = solution[i][j];
+                    outR = i;
+                    outC = j;
+                    outVal = solution[i][j];
+                    return true;
+                }
+                current++;
+            }
+        }
     }
     return false;
 }
