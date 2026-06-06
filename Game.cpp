@@ -20,7 +20,7 @@ int Game::getValidDifficulty() {
         cout << " [1] 簡單 (挖空 30 格, 容錯 3 次, 提示 3 次, 不限時)\n";
         cout << " [2] 普通 (挖空 42 格, 容錯 3 次, 提示 3 次, 不限時)\n";
         cout << " [3] 困難 (挖空 54 格, 容錯 3 次, 提示 3 次, 不限時)\n";
-        cout << " [4] 極限 (挖空 54 格, 容錯 3 次, 提示 3 次, 限時 5 分鐘)\n";
+        cout << " [4] 極限 (挖空 54 格, 容錯 3 次, 無提示, 限時 5 分鐘)\n";
         cout << "請輸入選擇 (1-4): ";
 
         if (cin >> choice && choice >= 1 && choice <= 4) {
@@ -70,13 +70,14 @@ void Game::start() {
     wrongCount = 0;
     hintCount = 0;
     maxWrong = 3;
-    maxHints = 3;
 
     if (difficulty == 4) {
         timeLimitInSeconds = 300;
+        maxHints = 0; // 極限模式無提示功能
     }
     else {
         timeLimitInSeconds = 0;
+        maxHints = 3; // 簡單、普通、困難享有 3 次提示
     }
 
     startTime = std::chrono::steady_clock::now();
@@ -109,10 +110,17 @@ void Game::start() {
             cout << " 目前錯誤次數: " << wrongCount << " / " << maxWrong << "\033[K\n\n";
 
             if (timeLimitInSeconds > 0) {
-                cout << " [極限挑戰] 剩餘時間: " << remainingTime / 60 << " 分 " << remainingTime % 60 << " 秒\033[K\n\n";
+                cout << " [極限挑戰] 剩餘時間: " << remainingTime / 60 << " 分 " << remainingTime % 60 << " 秒\033[K\n";
             }
             else {
-                cout << " [計時模式] 已遊玩時間: " << elapsedSeconds / 60 << " 分 " << elapsedSeconds % 60 << " 秒\033[K\n\n";
+                cout << " [計時模式] 已遊玩時間: " << elapsedSeconds / 60 << " 分 " << elapsedSeconds % 60 << " 秒\033[K\n";
+            }
+
+            if (maxHints > 0) {
+                cout << " [提示] 剩餘提示機會: " << (maxHints - hintCount) << " / " << maxHints << " (輸入 0 0 0 取得提示)\033[K\n\n";
+            }
+            else {
+                cout << " [提示] 極限模式不提供提示功能！\033[K\n\n";
             }
 
             display();
@@ -125,7 +133,9 @@ void Game::start() {
             }
 
             cout << "\n請輸入作答 [列] [行] [數字] (例如: 1 3 4): " << inputBuffer << "\033[K";
-            cout << flush;
+
+            // \033[?25h：在畫面的最後一步將游標顯示回來，讓玩家看得到輸入游標的位置
+            cout << "\033[?25h" << flush;
 
             if (_kbhit()) {
                 char ch = _getch();
@@ -163,7 +173,10 @@ void Game::start() {
 
         // 智慧提示功能
         if (r == 0 && c == 0 && v == 0) {
-            if (hintCount < maxHints) {
+            if (maxHints == 0) {
+                systemMessage = ">> [錯誤] 極限模式不提供提示功能！";
+            }
+            else if (hintCount < maxHints) {
                 int hr, hc, hv;
                 if (board.getHint(hr, hc, hv)) {
                     hintCount++;
