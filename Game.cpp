@@ -8,27 +8,27 @@
 using namespace std;
 
 void Game::clear() {
-    // \033[?25l¡GÁôÂÃ´å¼Ğ¡]Á×§K¦b­«Ã¸½L­±®É´å¼Ğ°{Ã{¶Ã¶]¡^
-    // \033[1;1H¡G±N´å¼Ğ²¾¦^¥ª¤W¨¤
+    // \033[?25lï¼šéš±è—æ¸¸æ¨™ï¼ˆé¿å…åœ¨é‡ç¹ªç›¤é¢æ™‚æ¸¸æ¨™é–ƒçˆäº‚è·‘ï¼‰
+    // \033[1;1Hï¼šå°‡æ¸¸æ¨™ç§»å›å·¦ä¸Šè§’
     cout << "\033[?25l\033[1;1H";
 }
 
 int Game::getValidDifficulty() {
     int choice;
     while (true) {
-        cout << "½Ğ¿ï¾Ü¹CÀ¸Ãø«×:\n";
-        cout << " [1] Â²³æ («õªÅ 30 ®æ, ®e¿ù 3 ¦¸, ´£¥Ü 3 ¦¸, ¤£­­®É)\n";
-        cout << " [2] ´¶³q («õªÅ 42 ®æ, ®e¿ù 3 ¦¸, ´£¥Ü 3 ¦¸, ¤£­­®É)\n";
-        cout << " [3] §xÃø («õªÅ 54 ®æ, ®e¿ù 3 ¦¸, ´£¥Ü 3 ¦¸, ¤£­­®É)\n";
-        cout << " [4] ·¥­­ («õªÅ 54 ®æ, ®e¿ù 3 ¦¸, µL´£¥Ü, ­­®É 5 ¤ÀÄÁ)\n";
-        cout << "½Ğ¿é¤J¿ï¾Ü (1-4): ";
+        cout << "è«‹é¸æ“‡éŠæˆ²é›£åº¦:\n";
+        cout << " [1] ç°¡å–® (æŒ–ç©º 30 æ ¼, å®¹éŒ¯ 3 æ¬¡, æç¤º 3 æ¬¡, ä¸é™æ™‚)\n";
+        cout << " [2] æ™®é€š (æŒ–ç©º 42 æ ¼, å®¹éŒ¯ 3 æ¬¡, æç¤º 3 æ¬¡, ä¸é™æ™‚)\n";
+        cout << " [3] å›°é›£ (æŒ–ç©º 54 æ ¼, å®¹éŒ¯ 3 æ¬¡, æç¤º 3 æ¬¡, ä¸é™æ™‚)\n";
+        cout << " [4] æ¥µé™ (æŒ–ç©º 54 æ ¼, å®¹éŒ¯ 3 æ¬¡, ç„¡æç¤º, é™æ™‚ 5 åˆ†é˜)\n";
+        cout << "è«‹è¼¸å…¥é¸æ“‡ (1-4): ";
 
         if (cin >> choice && choice >= 1 && choice <= 4) {
             cin.ignore(100, '\n');
             return choice;
         }
         else {
-            cout << ">> [¿ù»~] ¿é¤JµL®Ä¡A½Ğ¿é¤J 1, 2, 3 ©Î 4¡I\n\n";
+            cout << ">> [éŒ¯èª¤] è¼¸å…¥ç„¡æ•ˆï¼Œè«‹è¼¸å…¥ 1, 2, 3 æˆ– 4ï¼\n\n";
             cin.clear();
             cin.ignore(100, '\n');
         }
@@ -36,7 +36,7 @@ int Game::getValidDifficulty() {
 }
 
 void Game::display() {
-    // Åã¥Ü³»³¡¦æ¸¹ (Column)¡A½T«O¨Ï¥Î¯Â ASCII ¥b§ÎªÅ¥Õ
+    // é¡¯ç¤ºé ‚éƒ¨è¡Œè™Ÿ (Column)ï¼Œç¢ºä¿ä½¿ç”¨ç´” ASCII åŠå½¢ç©ºç™½
     cout << "         1 2 3   4 5 6   7 8 9\n";
     cout << "       +-------+-------+-------+\n";
 
@@ -45,7 +45,7 @@ void Game::display() {
             cout << "       +-------+-------+-------+\n";
         }
 
-        // ¥ª°¼Åã¥Ü¯Â¼Æ¦r¦C¸¹ (Row)
+        // å·¦å´é¡¯ç¤ºç´”æ•¸å­—åˆ—è™Ÿ (Row)
         cout << "     " << i + 1 << " | ";
 
         for (int j = 0; j < 9; j++) {
@@ -62,7 +62,7 @@ void Game::display() {
 
 void Game::start() {
     cout << "\033[2J\033[1;1H";
-    cout << "====== ÀH¾÷¥Í¦¨¼Æ¿W¬D¾ÔÁÉ ======\n\n";
+    cout << "====== éš¨æ©Ÿç”Ÿæˆæ•¸ç¨æŒ‘æˆ°è³½ ======\n\n";
 
     int difficulty = getValidDifficulty();
     board.generatePuzzle(difficulty);
@@ -73,20 +73,20 @@ void Game::start() {
 
     if (difficulty == 4) {
         timeLimitInSeconds = 300;
-        maxHints = 0; // ·¥­­¼Ò¦¡µL´£¥Ü¥\¯à
+        maxHints = 0; // æ¥µé™æ¨¡å¼ç„¡æç¤ºåŠŸèƒ½
     }
     else {
         timeLimitInSeconds = 0;
-        maxHints = 3; // Â²³æ¡B´¶³q¡B§xÃø¨É¦³ 3 ¦¸´£¥Ü
+        maxHints = 3; // ç°¡å–®ã€æ™®é€šã€å›°é›£äº«æœ‰ 3 æ¬¡æç¤º
     }
 
-    startTime = std::chrono::steady_clock::now();
+    startTime = chrono::steady_clock::now();
 
     string inputBuffer = "";
     string systemMessage = "";
     bool timeOut = false;
 
-    // ¦b¶i¤J¹CÀ¸«e¡A±j¨î²MªÅ©³¼hÁä½L½w½Ä°Ï
+    // åœ¨é€²å…¥éŠæˆ²å‰ï¼Œå¼·åˆ¶æ¸…ç©ºåº•å±¤éµç›¤ç·©è¡å€
     while (_kbhit()) { _getch(); }
 
     cout << "\033[2J\033[1;1H";
@@ -106,21 +106,21 @@ void Game::start() {
 
             clear();
 
-            cout << "====== ÀH¾÷¥Í¦¨¼Æ¿W¬D¾ÔÁÉ ======\n";
-            cout << " ¥Ø«e¿ù»~¦¸¼Æ: " << wrongCount << " / " << maxWrong << "\033[K\n\n";
+            cout << "====== éš¨æ©Ÿç”Ÿæˆæ•¸ç¨æŒ‘æˆ°è³½ ======\n";
+            cout << " ç›®å‰éŒ¯èª¤æ¬¡æ•¸: " << wrongCount << " / " << maxWrong << "\033[K\n\n";
 
             if (timeLimitInSeconds > 0) {
-                cout << " [·¥­­¬D¾Ô] ³Ñ¾l®É¶¡: " << remainingTime / 60 << " ¤À " << remainingTime % 60 << " ¬í\033[K\n";
+                cout << " [æ¥µé™æŒ‘æˆ°] å‰©é¤˜æ™‚é–“: " << remainingTime / 60 << " åˆ† " << remainingTime % 60 << " ç§’\033[K\n";
             }
             else {
-                cout << " [­p®É¼Ò¦¡] ¤w¹Cª±®É¶¡: " << elapsedSeconds / 60 << " ¤À " << elapsedSeconds % 60 << " ¬í\033[K\n";
+                cout << " [è¨ˆæ™‚æ¨¡å¼] å·²éŠç©æ™‚é–“: " << elapsedSeconds / 60 << " åˆ† " << elapsedSeconds % 60 << " ç§’\033[K\n";
             }
 
             if (maxHints > 0) {
-                cout << " [´£¥Ü] ³Ñ¾l´£¥Ü¾÷·|: " << (maxHints - hintCount) << " / " << maxHints << " (¿é¤J 0 0 0 ¨ú±o´£¥Ü)\033[K\n\n";
+                cout << " [æç¤º] å‰©é¤˜æç¤ºæ©Ÿæœƒ: " << (maxHints - hintCount) << " / " << maxHints << " (è¼¸å…¥ 0 0 0 å–å¾—æç¤º)\033[K\n\n";
             }
             else {
-                cout << " [´£¥Ü] ·¥­­¼Ò¦¡¤£´£¨Ñ´£¥Ü¥\¯à¡I\033[K\n\n";
+                cout << " [æç¤º] æ¥µé™æ¨¡å¼ä¸æä¾›æç¤ºåŠŸèƒ½ï¼\033[K\n\n";
             }
 
             display();
@@ -132,9 +132,9 @@ void Game::start() {
                 cout << "\n\033[K\n";
             }
 
-            cout << "\n½Ğ¿é¤J§@µª [¦C] [¦æ] [¼Æ¦r] (¨Ò¦p: 1 3 4): " << inputBuffer << "\033[K";
+            cout << "\nè«‹è¼¸å…¥ä½œç­” [åˆ—] [è¡Œ] [æ•¸å­—] (ä¾‹å¦‚: 1 3 4): " << inputBuffer << "\033[K";
 
-            // \033[?25h¡G¦bµe­±ªº³Ì«á¤@¨B±N´å¼ĞÅã¥Ü¦^¨Ó¡AÅıª±®a¬İ±o¨ì¿é¤J´å¼Ğªº¦ì¸m
+            // \033[?25hï¼šåœ¨ç•«é¢çš„æœ€å¾Œä¸€æ­¥å°‡æ¸¸æ¨™é¡¯ç¤ºå›ä¾†ï¼Œè®“ç©å®¶çœ‹å¾—åˆ°è¼¸å…¥æ¸¸æ¨™çš„ä½ç½®
             cout << "\033[?25h" << flush;
 
             if (_kbhit()) {
@@ -167,27 +167,27 @@ void Game::start() {
         systemMessage = "";
 
         if (!(ss >> r >> c >> v)) {
-            systemMessage = ">> [´£¥Ü] ¿é¤J®æ¦¡¿ù»~¡I½Ğ¿é¤J¤T­Ó¼Æ¦r¡]¥HªÅ®æ°Ï¹j¡^¡C";
+            systemMessage = ">> [æç¤º] è¼¸å…¥æ ¼å¼éŒ¯èª¤ï¼è«‹è¼¸å…¥ä¸‰å€‹æ•¸å­—ï¼ˆä»¥ç©ºæ ¼å€éš”ï¼‰ã€‚";
             continue;
         }
 
-        // ´¼¼z´£¥Ü¥\¯à
+        // æ™ºæ…§æç¤ºåŠŸèƒ½
         if (r == 0 && c == 0 && v == 0) {
             if (maxHints == 0) {
-                systemMessage = ">> [¿ù»~] ·¥­­¼Ò¦¡¤£´£¨Ñ´£¥Ü¥\¯à¡I";
+                systemMessage = ">> [éŒ¯èª¤] æ¥µé™æ¨¡å¼ä¸æä¾›æç¤ºåŠŸèƒ½ï¼";
             }
             else if (hintCount < maxHints) {
                 int hr, hc, hv;
                 if (board.getHint(hr, hc, hv)) {
                     hintCount++;
-                    systemMessage = ">> [´£¥Ü] ¨t²Î¤w¦Û°Ê¦b²Ä " + to_string(hr + 1) + " ¦C¡B²Ä " + to_string(hc + 1) + " ¦æ¶ñ¤J¥¿½T¼Æ¦r: " + to_string(hv);
+                    systemMessage = ">> [æç¤º] ç³»çµ±å·²è‡ªå‹•åœ¨ç¬¬ " + to_string(hr + 1) + " åˆ—ã€ç¬¬ " + to_string(hc + 1) + " è¡Œå¡«å…¥æ­£ç¢ºæ•¸å­—: " + to_string(hv);
                 }
                 else {
-                    systemMessage = ">> [´£¥Ü] ½L­±¤W¤w¸g¨S¦³ªÅ®æ¤F¡I";
+                    systemMessage = ">> [æç¤º] ç›¤é¢ä¸Šå·²ç¶“æ²’æœ‰ç©ºæ ¼äº†ï¼";
                 }
             }
             else {
-                systemMessage = ">> [¿ù»~] ¥»§½´£¥Ü¦¸¼Æ¤w¥ÎºÉ¡I";
+                systemMessage = ">> [éŒ¯èª¤] æœ¬å±€æç¤ºæ¬¡æ•¸å·²ç”¨ç›¡ï¼";
             }
             continue;
         }
@@ -195,39 +195,39 @@ void Game::start() {
         r--; c--;
 
         if (r < 0 || r >= 9 || c < 0 || c >= 9) {
-            systemMessage = ">> [´£¥Ü] ¦ì¸m¶W¥X½d³ò(1-9)¡I";
+            systemMessage = ">> [æç¤º] ä½ç½®è¶…å‡ºç¯„åœ(1-9)ï¼";
             continue;
         }
 
         if (board.getCell(r, c) != 0) {
-            systemMessage = ">> [´£¥Ü] ¸Ó³B¤w¸g¦³¼Æ¦r¤F¡I";
+            systemMessage = ">> [æç¤º] è©²è™•å·²ç¶“æœ‰æ•¸å­—äº†ï¼";
             continue;
         }
 
         if (!board.validateAndSet(r, c, v)) {
             wrongCount++;
-            systemMessage = ">> [¿ù»~] ¼Æ¦r " + to_string(v) + " ¤£¬O¥¿½Tµª®×¡I(³Ñ¾l¾÷·|: " + to_string(maxWrong - wrongCount) + ")";
+            systemMessage = ">> [éŒ¯èª¤] æ•¸å­— " + to_string(v) + " ä¸æ˜¯æ­£ç¢ºç­”æ¡ˆï¼(å‰©é¤˜æ©Ÿæœƒ: " + to_string(maxWrong - wrongCount) + ")";
         }
         else {
-            systemMessage = ">> [¦¨¥\] ¶ñ¤J¥¿½T¡I";
+            systemMessage = ">> [æˆåŠŸ] å¡«å…¥æ­£ç¢ºï¼";
         }
     }
 
     cout << "\033[2J\033[1;1H";
-    cout << "====== ¹CÀ¸µ²§ô ======\n";
+    cout << "====== éŠæˆ²çµæŸ ======\n";
     display();
 
     auto endTime = chrono::steady_clock::now();
     int totalTime = chrono::duration_cast<chrono::seconds>(endTime - startTime).count();
 
     if (board.isComplete() && !timeOut && wrongCount < maxWrong) {
-        cout << "\n®¥³ß§A§¹¦¨¤F³o«hÀH¾÷²£¥Íªº¼Æ¿W¡I¤Ó±j¤F¡I\n";
-        cout << "Á`¦@ªá¶O®É¶¡: " << totalTime / 60 << " ¤À " << totalTime % 60 << " ¬í\n";
+        cout << "\næ­å–œä½ å®Œæˆäº†é€™å‰‡éš¨æ©Ÿç”¢ç”Ÿçš„æ•¸ç¨ï¼å¤ªå¼·äº†ï¼\n";
+        cout << "ç¸½å…±èŠ±è²»æ™‚é–“: " << totalTime / 60 << " åˆ† " << totalTime % 60 << " ç§’\n";
     }
     else if (timeOut) {
-        cout << "\n«Ü¿ò¾Ñ¡A®É¶¡¨ì¡I¬D¾Ô¥¢±Ñ¡C\n";
+        cout << "\nå¾ˆéºæ†¾ï¼Œæ™‚é–“åˆ°ï¼æŒ‘æˆ°å¤±æ•—ã€‚\n";
     }
     else if (wrongCount >= maxWrong) {
-        cout << "\n«Ü¿ò¾Ñ¡A§A¤w¸g¹F¨ì¤F 3 ¦¸¿ù»~¡A¬D¾Ô¥¢±Ñ¡C\n";
+        cout << "\nå¾ˆéºæ†¾ï¼Œä½ å·²ç¶“é”åˆ°äº† 3 æ¬¡éŒ¯èª¤ï¼ŒæŒ‘æˆ°å¤±æ•—ã€‚\n";
     }
 }
